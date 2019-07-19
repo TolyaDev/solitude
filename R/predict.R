@@ -176,6 +176,14 @@ depth_terminalNodes <- function(treelike){
   edgeMat     <- as.matrix(melted[!is.na(value), c("nodeID", "value")]) + 1L
   treegraph   <- igraph::graph_from_edgelist(edgeMat)
   tnValues    <- treelike[is.na(leftChild) & is.na(rightChild), nodeID] + 1L
+  if (length(tnValues) == 1){
+    depths <- matrix(nrow=1, ncol=1)
+    depths[1,1] <- 1
+    dim(depths) <- NULL
+    names(depths) <- tnValues
+    return(depths)
+  }
+
   depths      <- igraph::distances(treegraph
                                    , v    = 1
                                    , to   = tnValues
